@@ -1,24 +1,1080 @@
-{
-  "name": "داشبورد مرغداری",
-  "short_name": "مرغداری",
-  "description": "مدیریت و مانیتورینگ سالن‌های پرورش مرغ",
-  "start_url": "/testmakian.net/",
-  "display": "standalone",
-  "background_color": "#f5f7fb",
-  "theme_color": "#2d5a9b",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد مرغداری</title>
+    <!-- لینک به مانیفست PWA -->
+    <link rel="manifest" href="manifest.json">
+    <!-- متا تگ‌های مخصوص iOS برای نصب به صفحه اصلی -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="مرغداری">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-item, .dropbtn {
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            padding: 8px 15px;
+            border-radius: 30px;
+            white-space: nowrap;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .nav-item:hover, .dropbtn:hover {
+            background: #f0f4ff;
+            color: #2d5a9b;
+        }
+
+        .nav-item.active {
+            background: #2d5a9b;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* استایل منوی کشویی */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            z-index: 1000;
+            padding: 8px 0;
+            margin-top: 5px;
+        }
+
+        .dropdown-content span {
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 10px;
+            margin: 4px 8px;
+        }
+
+        .dropdown-content span:hover {
+            background-color: #f0f4ff;
+            color: #2d5a9b;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile span {
+            color: #333;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #2d5a9b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .row { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .row { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-title {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-sub {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .hall-card {
+            border-right: 4px solid #2d5a9b;
+            position: relative;
+        }
+
+        .hall-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #2d5a9b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 30px;
+            font-size: 11px;
+        }
+
+        .row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+        .metric-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .metric-info h3 { color: #666; font-size: 14px; margin-bottom: 5px; }
+        .metric-info .value { font-size: 32px; font-weight: 600; color: #333; }
+        .metric-icon { width: 60px; height: 60px; background: #f0f4ff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #2d5a9b; }
+
+        .row-5 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+        .chart-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .chart-header h3 { color: #333; font-size: 16px; }
+        .chart-header span { color: #2d5a9b; font-size: 13px; cursor: pointer; }
+        .chart-placeholder { background: #f8f9fc; height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #999; }
+
+        /* استایل فرم گزارش روزانه (داخل مودال) */
+        .daily-report-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2d5a9b;
+        }
+        .form-group .calculated-age {
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 10px;
+            color: #2d5a9b;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .submit-btn {
+            background: #2d5a9b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background: #3a6bb0;
+        }
+        .info-message {
+            background: #e8f0fe;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #2d5a9b;
+        }
+
+        /* استایل لیست گزارشات */
+        .reports-list {
+            margin-top: 30px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+        }
+        .reports-list h4 {
+            margin-bottom: 15px;
+            color: #2d5a9b;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .report-item:last-child {
+            border-bottom: none;
+        }
+        .report-date {
+            font-weight: 600;
+            color: #2d5a9b;
+            min-width: 140px;
+        }
+        .report-details {
+            color: #333;
+            text-align: left;
+        }
+        .no-reports {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .modal-header h2 { color: #333; font-size: 20px; }
+        .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+
+        .hall-edit-item {
+            background: #f8f9fc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+        .hall-edit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .hall-edit-header h3 { color: #2d5a9b; font-size: 16px; }
+        .hall-edit-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .hall-edit-row label { color: #666; font-size: 13px; }
+        .hall-edit-row input, .hall-edit-row select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .hall-edit-row input:focus, .hall-edit-row select:focus {
+            outline: none;
+            border-color: #2d5a9b;
+        }
+
+        .calc-container {
+            background: #f0f4ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .calc-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5a9b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .calc-grid label { color: #333; font-size: 14px; font-weight: 500; }
+        .calc-grid input, .calc-grid select {
+            padding: 8px 12px;
+            border: 1px solid #2d5a9b;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .calc-result {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #2d5a9b;
+        }
+        .calc-result .label {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .calc-result .value {
+            font-size: 42px;
+            font-weight: bold;
+            color: #2d5a9b;
+        }
+        .calc-result .unit {
+            font-size: 14px;
+            color: #666;
+        }
+        .calc-result .hz-value {
+            font-size: 18px;
+            color: #2d5a9b;
+            margin-top: 5px;
+        }
+        .calc-btn {
+            background: #2d5a9b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .calc-btn:hover { background: #3a6bb0; }
+
+        .add-hall-btn {
+            background: #f0f4ff;
+            border: 2px dashed #2d5a9b;
+            color: #2d5a9b;
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-btn.primary { background: #2d5a9b; color: white; }
+        .modal-btn.primary:hover { background: #3a6bb0; }
+        .modal-btn.secondary { background: #eee; color: #666; }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        /* استایل مودال گزارشات */
+        .reports-modal-summary {
+            background: #f0f4ff;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-item .label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .summary-item .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d5a9b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- هدر با منوهای کشویی -->
+        <div class="header">
+            <div class="logo"><h1>مرغداری</h1></div>
+            <div class="nav-menu">
+                <!-- Dropdown گزارش‌ها -->
+                <div class="dropdown">
+                    <button class="dropbtn">📋 گزارش‌ها</button>
+                    <div class="dropdown-content">
+                        <span onclick="openDailyReportModal()">گزارش روزانه</span>
+                        <span onclick="alert('ثبت خریدهای دوره به زودی')">ثبت خریدهای دوره</span>
+                        <span onclick="alert('گزارشات فروش مرغ به زودی')">گزارشات فروش مرغ</span>
+                    </div>
+                </div>
+                <!-- Dropdown محاسبات و نمودارها -->
+                <div class="dropdown">
+                    <button class="dropbtn">🧮 محاسبات و نمودارها</button>
+                    <div class="dropdown-content">
+                        <span onclick="openWaterVaccine()">محاسبه آب واکسن</span>
+                        <span onclick="openWaterCalc()">محاسبه مصرف آب</span>
+                        <span onclick="openConsumptionCalc()">محاسبه مصرف شده</span>
+                        <span onclick="openMortalityChart()">نمودار تلفات</span>
+                        <span onclick="openMoreCalculations()">محاسبات تکمیلی</span>
+                    </div>
+                </div>
+                <!-- سایر آیتم‌ها -->
+                <span class="nav-item" onclick="openFanCalculator()">🌀 تنظیم دور فن</span>
+                <span class="nav-item" onclick="openSettings()">🐣 ورود جوجه</span>
+                <span class="nav-item" onclick="openReportsModal()">📊 گزارشات</span>
+            </div>
+            <div class="profile">
+                <span>مدیر مرغداری</span>
+                <div class="avatar">م</div>
+            </div>
+        </div>
+
+        <!-- ردیف ۱: موجودی سالن‌ها -->
+        <div class="row" id="hallsRow"></div>
+
+        <!-- ردیف ۲: مصرف دان و ضریب تبدیل -->
+        <div class="row-2">
+            <div class="metric-card">
+                <div class="metric-info"><h3>🌾 مصرف دان</h3><div class="value" id="totalFeed">۰</div><div>کیلوگرم</div></div>
+                <div class="metric-icon">📊</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info"><h3>📈 ضریب تبدیل</h3><div class="value" id="conversionRate">۰</div><div>kg/kg</div></div>
+                <div class="metric-icon">🔄</div>
+            </div>
+        </div>
+
+        <!-- ردیف ۵: نمودارها -->
+        <div class="row-5">
+            <div class="chart-card"><div class="chart-header"><h3>📊 نمودار میانگین وزن</h3><span>۷ روز اخیر</span></div><div class="chart-placeholder">[نمودار میانگین وزن]</div></div>
+            <div class="chart-card"><div class="chart-header"><h3>📉 نمودار تلفات</h3><span>۷ روز اخیر</span></div><div class="chart-placeholder">[نمودار تلفات]</div></div>
+        </div>
+    </div>
+
+    <!-- مودال ورود جوجه -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>🐣 ورود جوجه</h2><button class="close-btn" onclick="closeSettingsModal()">×</button></div>
+            <div id="hallsEditContainer"></div>
+            <button class="add-hall-btn" onclick="addNewHall()"><span>+</span> افزودن سالن جدید</button>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="saveHallChanges()">ذخیره تغییرات</button>
+                <button class="modal-btn secondary" onclick="closeSettingsModal()">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تنظیم دور فن -->
+    <div class="modal" id="fanModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌀 ماشین حساب دور فن</h2>
+                <button class="close-btn" onclick="closeFanModal()">×</button>
+            </div>
+            <div class="calc-container">
+                <div class="calc-title">⚙️ پارامترهای ورودی</div>
+                <div class="calc-grid">
+                    <label>سن جوجه (روز):</label>
+                    <input type="number" id="calcAge" value="20" min="0">
+                </div>
+                <div class="calc-grid">
+                    <label>دمای داخل سالن (°C):</label>
+                    <input type="number" id="calcTemp" value="28" min="0" max="50">
+                </div>
+                <div class="calc-grid">
+                    <label>رطوبت نسبی (%):</label>
+                    <input type="number" id="calcHumidity" value="60" min="0" max="100">
+                </div>
+                <div class="calc-grid">
+                    <label>وزن متوسط جوجه (گرم):</label>
+                    <input type="number" id="calcWeight" value="800" min="0">
+                </div>
+                <div class="calc-grid">
+                    <label>نوع فن:</label>
+                    <select id="calcFanType">
+                        <option value="axial">محوری (Axial)</option>
+                        <option value="centrifugal">سانتریفیوژ (Centrifugal)</option>
+                    </select>
+                </div>
+                <div class="calc-grid">
+                    <label>حداکثر دور فن (RPM):</label>
+                    <input type="number" id="calcMaxRPM" value="3000" min="100" max="10000">
+                </div>
+                <div class="calc-grid">
+                    <label>فرکانس شبکه (Hz):</label>
+                    <input type="number" id="calcFreq" value="50" min="50" max="60">
+                </div>
+                <button class="calc-btn" onclick="calculateFanSpeed()">محاسبه دور پیشنهادی</button>
+                <div class="calc-result" id="calcResult">
+                    <div class="label">دور پیشنهادی:</div>
+                    <div class="value" id="suggestedRPM">۱۴۰۰</div>
+                    <div class="unit">RPM</div>
+                    <div class="hz-value" id="suggestedFrequency">(معادل ۲۳.۳ Hz در اینورتر)</div>
+                </div>
+                <div style="background: #e8f0fe; padding: 10px; border-radius: 8px; font-size: 12px; color: #2d5a9b; margin-top: 10px;">
+                    <strong>فرمول محاسبه:</strong> دور پایه ۱۰۰۰ + (سن × ۱۰) + (هر درجه بالای ۲۵، +۲۰) + (هر ۱۰٪ رطوبت بالای ۷۰، +۵۰) + (هر ۱۰۰ گرم بالای ۱۰۰۰ گرم، +۳۰) × ضریب نوع فن (محوری ۱, سانتریفیوژ ۱.۲). سپس محدود به حداکثر دور.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال نمایش گزارشات ثبت شده -->
+    <div class="modal" id="reportsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 گزارشات ثبت‌شده</h2>
+                <button class="close-btn" onclick="closeReportsModal()">×</button>
+            </div>
+            <div class="form-group">
+                <label>انتخاب سالن:</label>
+                <select id="modalReportHallSelect" onchange="loadReportsIntoModal(this.value)">
+                    <!-- توسط js پر می‌شود -->
+                </select>
+            </div>
+            <div class="reports-modal-summary" id="modalSummary">
+                <!-- خلاصه آماری -->
+            </div>
+            <div class="reports-list" id="modalReportsList" style="max-height: 300px;">
+                <!-- لیست گزارشات -->
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال جدید گزارش روزانه -->
+    <div class="modal" id="dailyReportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 گزارش روزانه</h2>
+                <button class="close-btn" onclick="closeDailyReportModal()">×</button>
+            </div>
+            <div class="daily-report-form">
+                <div class="info-message">📌 لطفاً اطلاعات امروز را وارد کنید. سن بر اساس تعداد گزارش‌های ثبت‌شده محاسبه می‌شود.</div>
+                
+                <div class="form-group">
+                    <label>انتخاب سالن:</label>
+                    <select id="modalDailyHallSelect" onchange="updateModalAgeDisplay(); renderModalReportsList();">
+                        <!-- توسط js پر می‌شود -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>سن جوجه (روز):</label>
+                    <div class="calculated-age" id="modalCalculatedAgeDisplay">0</div>
+                </div>
+
+                <div class="form-group">
+                    <label>تعداد تلفات امروز:</label>
+                    <input type="number" id="modalMortalityInput" min="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>مصرف دان امروز (کیلوگرم):</label>
+                    <input type="number" id="modalFeedInput" min="0" value="0">
+                </div>
+
+                <div class="form-group" id="modalWeightGroup" style="display: none;">
+                    <label>میانگین وزن امروز (گرم):</label>
+                    <input type="number" id="modalWeightInput" min="0">
+                </div>
+
+                <button class="submit-btn" onclick="submitModalDailyReport()">ثبت گزارش روزانه</button>
+            </div>
+            <div id="modalReportsListContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // داده‌های سالن‌ها با یک سالن پیش‌فرض
+        let halls = [
+            { 
+                id: 1, 
+                name: 'سالن ۱', 
+                initialCount: 10000, 
+                count: 10000, 
+                breed: 'راس 308', 
+                entryDate: '1404/4/12',   // تاریخ ورود (فقط برای نمایش)
+                dailyReports: [] 
+            }
+        ];
+
+        // تابع تبدیل تاریخ میلادی به شمسی با ساعت و دقیقه
+        function toJalaliWithTime(date) {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = d.getMonth() + 1;
+            const day = d.getDate();
+            const hours = d.getHours();
+            const minutes = d.getMinutes();
+            // سال شمسی = میلادی - 621 (برای فروردین تا اسفند)
+            let jalaliYear = year - 621;
+            let jalaliMonth = month;
+            let jalaliDay = day;
+            // این یک تبدیل ساده است؛ برای دقیق بودن نیاز به کتابخانه است
+            return `${jalaliYear}/${jalaliMonth.toString().padStart(2, '0')}/${jalaliDay.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+
+        // به‌روزرسانی متریک‌های اصلی (مصرف دان و ضریب تبدیل)
+        function updateMainMetrics() {
+            let totalFeed = 0;
+            halls.forEach(hall => {
+                totalFeed += hall.dailyReports.reduce((sum, r) => sum + r.feed, 0);
+            });
+            document.getElementById('totalFeed').innerText = totalFeed.toLocaleString();
+
+            // محاسبه ضریب تبدیل
+            let totalWeight = 0;
+            let birdCount = 0;
+            halls.forEach(hall => {
+                const lastWeightReport = [...hall.dailyReports].reverse().find(r => r.weight);
+                if (lastWeightReport && hall.count > 0) {
+                    totalWeight += lastWeightReport.weight * hall.count;
+                    birdCount += hall.count;
+                }
+            });
+            let conversion = 0;
+            if (totalWeight > 0) {
+                conversion = totalFeed / (totalWeight / 1000);
+            }
+            document.getElementById('conversionRate').innerText = conversion.toFixed(2);
+
+            updateHallsDisplay();
+        }
+
+        function updateHallsDisplay() {
+            const row = document.getElementById('hallsRow');
+            row.innerHTML = '';
+            halls.forEach(hall => {
+                row.innerHTML += `
+                    <div class="card hall-card" data-hall-id="${hall.id}">
+                        <div class="hall-badge">${hall.name}</div>
+                        <div class="card-title">🏭 موجودی</div>
+                        <div class="card-value">${hall.count.toLocaleString()}</div>
+                        <div class="card-sub">قطعه</div>
+                        <div class="card-sub" style="margin-top:5px; color:#2d5a9b;">ورود: ${hall.entryDate}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // باز و بستن مودال‌ها
+        function openSettings() { renderHallsEdit(); document.getElementById('settingsModal').classList.add('active'); }
+        function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
+
+        function openFanCalculator() { 
+            document.getElementById('fanModal').classList.add('active');
+            calculateFanSpeed();
+        }
+        function closeFanModal() { document.getElementById('fanModal').classList.remove('active'); }
+
+        // ماشین حساب دور فن
+        function calculateFanSpeed() {
+            const age = parseFloat(document.getElementById('calcAge').value) || 0;
+            const temp = parseFloat(document.getElementById('calcTemp').value) || 25;
+            const humidity = parseFloat(document.getElementById('calcHumidity').value) || 60;
+            const weight = parseFloat(document.getElementById('calcWeight').value) || 800;
+            const fanType = document.getElementById('calcFanType').value;
+            const maxRPM = parseFloat(document.getElementById('calcMaxRPM').value) || 3000;
+            const freq = parseFloat(document.getElementById('calcFreq').value) || 50;
+
+            let speed = 1000;
+            speed += age * 10;
+            if (temp > 25) speed += (temp - 25) * 20;
+            else if (temp < 20) speed -= (20 - temp) * 10;
+            if (humidity > 70) speed += Math.floor((humidity - 70) / 10) * 50;
+            if (weight > 1000) speed += Math.floor((weight - 1000) / 100) * 30;
+            if (fanType === 'centrifugal') speed *= 1.2;
+            speed = Math.min(maxRPM, Math.max(500, Math.round(speed)));
+
+            document.getElementById('suggestedRPM').innerText = speed;
+            const equivalentFreq = (speed / maxRPM) * freq;
+            document.getElementById('suggestedFrequency').innerText = `(معادل ${equivalentFreq.toFixed(1)} Hz در اینورتر)`;
+        }
+
+        // توابع ساده برای آیتم‌های dropdown
+        function openWaterVaccine() { alert('محاسبه آب واکسن'); }
+        function openWaterCalc() { alert('محاسبه مصرف آب'); }
+        function openConsumptionCalc() { alert('محاسبه مصرف شده'); }
+        function openMortalityChart() { alert('نمودار تلفات'); }
+        function openMoreCalculations() { alert('محاسبات تکمیلی'); }
+
+        // توابع مدیریت سالن‌ها (ویرایش در مودال)
+        function renderHallsEdit() {
+            const container = document.getElementById('hallsEditContainer');
+            container.innerHTML = '';
+            halls.forEach((hall) => {
+                const hallDiv = document.createElement('div');
+                hallDiv.className = 'hall-edit-item';
+                hallDiv.innerHTML = `
+                    <div class="hall-edit-header"><h3>${hall.name}</h3><span>شناسه: ${hall.id}</span></div>
+                    <div class="hall-edit-row"><label>نام سالن:</label><input type="text" class="hall-name-input" data-id="${hall.id}" value="${hall.name}"></div>
+                    <div class="hall-edit-row"><label>تعداد جوجه (اولیه):</label><input type="number" class="hall-initial-count-input" data-id="${hall.id}" value="${hall.initialCount}"></div>
+                    <div class="hall-edit-row"><label>نژاد:</label>
+                        <select class="hall-breed-input" data-id="${hall.id}">
+                            <option value="انتخاب نژاد" ${hall.breed === 'انتخاب نژاد' ? 'selected' : ''}>انتخاب نژاد</option>
+                            <option value="راس 308" ${hall.breed === 'راس 308' ? 'selected' : ''}>راس 308</option>
+                            <option value="کاب 500" ${hall.breed === 'کاب 500' ? 'selected' : ''}>کاب 500</option>
+                            <option value="پلاس" ${hall.breed === 'پلاس' ? 'selected' : ''}>پلاس</option>
+                            <option value="آرین" ${hall.breed === 'آرین' ? 'selected' : ''}>آرین</option>
+                        </select>
+                    </div>
+                    <div class="hall-edit-row"><label style="color:#dc3545;">تاریخ ورود جوجه:</label><input type="text" class="hall-entrydate-input" data-id="${hall.id}" value="${hall.entryDate}" placeholder="مثال: 1404/4/12" style="border-color:#dc3545;"></div>
+                    <button class="delete-btn" onclick="deleteHall(${hall.id})">حذف سالن</button>
+                `;
+                container.appendChild(hallDiv);
+            });
+        }
+
+        function addNewHall() {
+            const newId = halls.length > 0 ? Math.max(...halls.map(h => h.id)) + 1 : 1;
+            halls.push({ 
+                id: newId, 
+                name: `سالن ${newId}`, 
+                initialCount: 0, 
+                count: 0, 
+                breed: 'انتخاب نژاد', 
+                entryDate: 'ثبت نشده',
+                dailyReports: []
+            });
+            renderHallsEdit();
+        }
+
+        function deleteHall(id) {
+            if (halls.length <= 1) { alert('حداقل باید یک سالن وجود داشته باشد'); return; }
+            if (confirm('آیا از حذف این سالن اطمینان دارید؟')) {
+                halls = halls.filter(h => h.id !== id);
+                renderHallsEdit();
+                updateHallsDisplay();
+                updateMainMetrics();
+            }
+        }
+
+        function saveHallChanges() {
+            document.querySelectorAll('.hall-name-input').forEach(inp => {
+                const id = parseInt(inp.dataset.id); const hall = halls.find(h => h.id === id); if(hall) hall.name = inp.value;
+            });
+            document.querySelectorAll('.hall-initial-count-input').forEach(inp => {
+                const id = parseInt(inp.dataset.id); const hall = halls.find(h => h.id === id); if(hall) hall.initialCount = parseInt(inp.value) || 0;
+            });
+            document.querySelectorAll('.hall-breed-input').forEach(inp => {
+                const id = parseInt(inp.dataset.id); const hall = halls.find(h => h.id === id); if(hall) hall.breed = inp.value;
+            });
+            document.querySelectorAll('.hall-entrydate-input').forEach(inp => {
+                const id = parseInt(inp.dataset.id); const hall = halls.find(h => h.id === id); if(hall) hall.entryDate = inp.value;
+            });
+
+            // بازمحاسبه count از روی initialCount و تلفات
+            halls.forEach(hall => {
+                const totalMortality = hall.dailyReports.reduce((sum, r) => sum + r.mortality, 0);
+                hall.count = hall.initialCount - totalMortality;
+                if (hall.count < 0) hall.count = 0;
+            });
+
+            updateHallsDisplay();
+            updateMainMetrics();
+            closeSettingsModal();
+            alert('✅ تغییرات ذخیره شد');
+        }
+
+        // توابع مودال گزارشات (نمایش لیست)
+        function openReportsModal() {
+            const modal = document.getElementById('reportsModal');
+            const select = document.getElementById('modalReportHallSelect');
+            select.innerHTML = '';
+            halls.forEach(hall => {
+                const option = document.createElement('option');
+                option.value = hall.id;
+                option.textContent = hall.name;
+                select.appendChild(option);
+            });
+            loadReportsIntoModal(halls[0].id);
+            modal.classList.add('active');
+        }
+
+        function closeReportsModal() {
+            document.getElementById('reportsModal').classList.remove('active');
+        }
+
+        function loadReportsIntoModal(hallId) {
+            const hall = halls.find(h => h.id == hallId);
+            if (!hall) return;
+
+            const totalMortality = hall.dailyReports.reduce((sum, r) => sum + r.mortality, 0);
+            const totalFeed = hall.dailyReports.reduce((sum, r) => sum + r.feed, 0);
+            const summaryDiv = document.getElementById('modalSummary');
+            summaryDiv.innerHTML = `
+                <div class="summary-item"><span class="label">🐔 موجودی فعلی</span><span class="value">${hall.count.toLocaleString()}</span></div>
+                <div class="summary-item"><span class="label">💀 مجموع تلفات</span><span class="value">${totalMortality}</span></div>
+                <div class="summary-item"><span class="label">🌾 مجموع مصرف دان</span><span class="value">${totalFeed} kg</span></div>
+            `;
+
+            const listDiv = document.getElementById('modalReportsList');
+            let html = '<h4>📋 گزارش‌های ثبت‌شده</h4>';
+            if (hall.dailyReports.length === 0) {
+                html += '<div class="no-reports">هیچ گزارشی ثبت نشده است</div>';
+            } else {
+                const sorted = [...hall.dailyReports].sort((a, b) => (a.date > b.date ? -1 : 1));
+                sorted.forEach(report => {
+                    html += `<div class="report-item">
+                        <span class="report-date">${report.date}</span>
+                        <span class="report-details">📉 تلفات: ${report.mortality} | 🌾 دان: ${report.feed} کیلوگرم ${report.weight ? '| ⚖️ وزن: ' + report.weight + ' گرم' : ''}</span>
+                    </div>`;
+                });
+            }
+            listDiv.innerHTML = html;
+        }
+
+        // توابع مودال گزارش روزانه
+        function openDailyReportModal() {
+            const modal = document.getElementById('dailyReportModal');
+            const select = document.getElementById('modalDailyHallSelect');
+            select.innerHTML = '';
+            halls.forEach(hall => {
+                const option = document.createElement('option');
+                option.value = hall.id;
+                option.textContent = hall.name;
+                select.appendChild(option);
+            });
+            // به‌روزرسانی سن و لیست برای اولین سالن
+            updateModalAgeDisplay();
+            renderModalReportsList();
+            modal.classList.add('active');
+        }
+
+        function closeDailyReportModal() {
+            document.getElementById('dailyReportModal').classList.remove('active');
+        }
+
+        function getSelectedModalHallId() {
+            const select = document.getElementById('modalDailyHallSelect');
+            return select ? parseInt(select.value) : null;
+        }
+
+        function updateModalAgeDisplay() {
+            const hallId = getSelectedModalHallId();
+            if (!hallId) return;
+            const hall = halls.find(h => h.id === hallId);
+            const age = hall.dailyReports.length + 1;
+            const ageDisplay = document.getElementById('modalCalculatedAgeDisplay');
+            if (ageDisplay) ageDisplay.innerText = age;
+
+            const weightGroup = document.getElementById('modalWeightGroup');
+            if (weightGroup) {
+                if (age > 0 && age % 7 === 0) {
+                    weightGroup.style.display = 'block';
+                } else {
+                    weightGroup.style.display = 'none';
+                }
+            }
+        }
+
+        function renderModalReportsList() {
+            const hallId = getSelectedModalHallId();
+            if (!hallId) return;
+            const hall = halls.find(h => h.id === hallId);
+            const container = document.getElementById('modalReportsListContainer');
+            if (!container) return;
+
+            let html = '<div class="reports-list"><h4>📋 گزارش‌های ثبت‌شده</h4>';
+            if (hall.dailyReports.length === 0) {
+                html += '<div class="no-reports">هیچ گزارشی ثبت نشده است</div>';
+            } else {
+                const sorted = [...hall.dailyReports].sort((a, b) => (a.date > b.date ? -1 : 1));
+                sorted.forEach(report => {
+                    html += `<div class="report-item">
+                        <span class="report-date">${report.date}</span>
+                        <span class="report-details">📉 تلفات: ${report.mortality} | 🌾 دان: ${report.feed} کیلوگرم ${report.weight ? '| ⚖️ وزن: ' + report.weight + ' گرم' : ''}</span>
+                    </div>`;
+                });
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function submitModalDailyReport() {
+            const hallId = getSelectedModalHallId();
+            if (!hallId) return;
+            const hall = halls.find(h => h.id === hallId);
+            const mortality = parseInt(document.getElementById('modalMortalityInput').value) || 0;
+            const feed = parseInt(document.getElementById('modalFeedInput').value) || 0;
+            const weightInput = document.getElementById('modalWeightInput');
+            const weight = weightInput && weightInput.style.display !== 'none' ? parseInt(weightInput.value) : null;
+
+            const todayJalali = toJalaliWithTime(new Date());
+
+            hall.dailyReports.push({
+                date: todayJalali,
+                mortality: mortality,
+                feed: feed,
+                weight: weight
+            });
+
+            const totalMortality = hall.dailyReports.reduce((sum, r) => sum + r.mortality, 0);
+            hall.count = hall.initialCount - totalMortality;
+            if (hall.count < 0) hall.count = 0;
+
+            updateMainMetrics();
+
+            alert('✅ گزارش روزانه ثبت شد');
+            document.getElementById('modalMortalityInput').value = 0;
+            document.getElementById('modalFeedInput').value = 0;
+            if (weightInput) weightInput.value = '';
+            updateModalAgeDisplay();
+            renderModalReportsList();
+
+            // اگر مودال گزارشات باز است، آن را هم به‌روز کنیم
+            const reportsModal = document.getElementById('reportsModal');
+            if (reportsModal.classList.contains('active')) {
+                const select = document.getElementById('modalReportHallSelect');
+                if (select) loadReportsIntoModal(select.value);
+            }
+        }
+
+        // بستن مودال با کلیک بیرون
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // مقداردهی اولیه
+        updateHallsDisplay();
+        updateMainMetrics();
+    </script>
+
+    <!-- ثبت سرویس ورکر برای PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/testmakian.net/sw.js')
+                    .then(reg => console.log('✅ Service Worker registered:', reg))
+                    .catch(err => console.log('❌ Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
