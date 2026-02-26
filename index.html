@@ -2,7 +2,9 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- متا تگ viewport اصلاح‌شده برای جلوگیری از زوم -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>داشبورد مرغداری</title>
     
     <!-- لینک به مانیفست PWA -->
@@ -13,28 +15,30 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مرغداری">
-    <link rel="apple-touch-icon" href="icons/new-icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     
     <!-- فاویکون (اختیاری) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐔</text></svg>">
     
     <style>
-        /* استایل‌های قبلی شما - دقیقاً مانند قبل */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+
         body {
             background: #f5f7fb;
             min-height: 100vh;
             padding: 20px;
         }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -47,16 +51,19 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+
         .logo h1 {
             font-size: 24px;
             color: #333;
         }
+
         .nav-menu {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             align-items: center;
         }
+
         .nav-item, .dropbtn {
             color: #666;
             cursor: pointer;
@@ -69,19 +76,23 @@
             border: none;
             font-family: inherit;
         }
+
         .nav-item:hover, .dropbtn:hover {
             background: #f0f4ff;
             color: #2d5a9b;
         }
+
         .nav-item.active {
             background: #2d5a9b;
             color: white;
             font-weight: 600;
         }
+
         .dropdown {
             position: relative;
             display: inline-block;
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -95,6 +106,7 @@
             padding: 8px 0;
             margin-top: 5px;
         }
+
         .dropdown-content span {
             color: #333;
             padding: 10px 20px;
@@ -106,21 +118,26 @@
             border-radius: 10px;
             margin: 4px 8px;
         }
+
         .dropdown-content span:hover {
             background-color: #f0f4ff;
             color: #2d5a9b;
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .profile {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .profile span {
             color: #333;
         }
+
         .avatar {
             width: 40px;
             height: 40px;
@@ -131,12 +148,14 @@
             align-items: center;
             justify-content: center;
         }
+
         .row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 20px;
         }
+
         @media (max-width: 1200px) {
             .row { grid-template-columns: repeat(3, 1fr); }
         }
@@ -146,6 +165,7 @@
         @media (max-width: 600px) {
             .row { grid-template-columns: 1fr; }
         }
+
         .card {
             background: white;
             border-radius: 20px;
@@ -154,6 +174,7 @@
             transition: all 0.3s ease;
             width: 100%;
         }
+
         .card-title {
             color: #666;
             font-size: 14px;
@@ -162,20 +183,24 @@
             align-items: center;
             gap: 5px;
         }
+
         .card-value {
             font-size: 28px;
             font-weight: 600;
             color: #333;
             margin-bottom: 5px;
         }
+
         .card-sub {
             color: #999;
             font-size: 13px;
         }
+
         .hall-card {
             border-right: 4px solid #2d5a9b;
             position: relative;
         }
+
         .hall-badge {
             position: absolute;
             top: 10px;
@@ -186,6 +211,7 @@
             border-radius: 30px;
             font-size: 11px;
         }
+
         .row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
         .metric-card {
             background: white;
@@ -198,6 +224,7 @@
         .metric-info h3 { color: #666; font-size: 14px; margin-bottom: 5px; }
         .metric-info .value { font-size: 32px; font-weight: 600; color: #333; }
         .metric-icon { width: 60px; height: 60px; background: #f0f4ff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #2d5a9b; }
+
         .row-5 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
         .chart-card {
             background: white;
@@ -208,9 +235,20 @@
         .chart-header h3 { color: #333; font-size: 16px; }
         .chart-header span { color: #2d5a9b; font-size: 13px; cursor: pointer; }
         .chart-placeholder { background: #f8f9fc; height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #999; }
-        .daily-report-form { max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
+
+        .daily-report-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
@@ -250,6 +288,7 @@
             margin-bottom: 20px;
             color: #2d5a9b;
         }
+
         .reports-list {
             margin-top: 30px;
             background: white;
@@ -289,6 +328,7 @@
             color: #999;
             padding: 20px;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -318,6 +358,7 @@
         }
         .modal-header h2 { color: #333; font-size: 20px; }
         .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+
         .hall-edit-item {
             background: #f8f9fc;
             border-radius: 15px;
@@ -345,6 +386,7 @@
             outline: none;
             border-color: #2d5a9b;
         }
+
         .calc-container {
             background: #f0f4ff;
             border-radius: 15px;
@@ -413,6 +455,7 @@
             transition: all 0.3s ease;
         }
         .calc-btn:hover { background: #3a6bb0; }
+
         .add-hall-btn {
             background: #f0f4ff;
             border: 2px dashed #2d5a9b;
@@ -481,7 +524,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- هدر -->
         <div class="header">
             <div class="logo"><h1>مرغداری</h1></div>
             <div class="nav-menu">
@@ -513,10 +555,8 @@
             </div>
         </div>
 
-        <!-- ردیف ۱: موجودی سالن‌ها -->
         <div class="row" id="hallsRow"></div>
 
-        <!-- ردیف ۲: مصرف دان و ضریب تبدیل -->
         <div class="row-2">
             <div class="metric-card">
                 <div class="metric-info"><h3>🌾 مصرف دان</h3><div class="value" id="totalFeed">۰</div><div>کیلوگرم</div></div>
@@ -528,14 +568,12 @@
             </div>
         </div>
 
-        <!-- ردیف ۵: نمودارها -->
         <div class="row-5">
             <div class="chart-card"><div class="chart-header"><h3>📊 نمودار میانگین وزن</h3><span>۷ روز اخیر</span></div><div class="chart-placeholder">[نمودار میانگین وزن]</div></div>
             <div class="chart-card"><div class="chart-header"><h3>📉 نمودار تلفات</h3><span>۷ روز اخیر</span></div><div class="chart-placeholder">[نمودار تلفات]</div></div>
         </div>
     </div>
 
-    <!-- مودال‌ها (بدون تغییر) -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <div class="modal-header"><h2>🐣 ورود جوجه</h2><button class="close-btn" onclick="closeSettingsModal()">×</button></div>
@@ -623,7 +661,6 @@
     </div>
 
     <script>
-        // داده‌های سالن‌ها
         let halls = [
             { 
                 id: 1, 
@@ -636,7 +673,6 @@
             }
         ];
 
-        // توابع کمکی
         function toJalaliWithTime(date) {
             const d = new Date(date);
             const year = d.getFullYear();
@@ -690,7 +726,6 @@
             });
         }
 
-        // مودال‌ها
         function openSettings() { renderHallsEdit(); document.getElementById('settingsModal').classList.add('active'); }
         function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
         function openFanCalculator() { document.getElementById('fanModal').classList.add('active'); calculateFanSpeed(); }
@@ -748,14 +783,12 @@
             document.getElementById('suggestedFrequency').innerText = `(معادل ${equivalentFreq.toFixed(1)} Hz در اینورتر)`;
         }
 
-        // توابع ساده
         function openWaterVaccine() { alert('محاسبه آب واکسن'); }
         function openWaterCalc() { alert('محاسبه مصرف آب'); }
         function openConsumptionCalc() { alert('محاسبه مصرف شده'); }
         function openMortalityChart() { alert('نمودار تلفات'); }
         function openMoreCalculations() { alert('محاسبات تکمیلی'); }
 
-        // ویرایش سالن‌ها
         function renderHallsEdit() {
             const container = document.getElementById('hallsEditContainer');
             container.innerHTML = '';
@@ -947,7 +980,6 @@
         updateMainMetrics();
     </script>
 
-    <!-- ثبت سرویس ورکر -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
